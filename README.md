@@ -1,11 +1,25 @@
-# Russian Traffic Sign Classifier
+# Russian Traffic Sign Classifier 🚦
 
-Учебный проект по классификации изображений российских дорожных знаков с использованием сверточных нейронных сетей на PyTorch.
+Учебный проект по компьютерному зрению и глубокому обучению для классификации российских дорожных знаков с использованием PyTorch и сверточных нейронных сетей.
 
-## Задача
+---
 
-Цель проекта — разработать модель машинного обучения для распознавания дорожных знаков по изображениям.
-Используется датасет RTSD, содержащий изображения российских дорожных знаков.
+## О проекте
+
+Проект решает задачу многоклассовой классификации изображений дорожных знаков на датасете RTSD (Russian Traffic Sign Dataset).
+
+Модель обучается распознавать 155 классов дорожных знаков по изображениям, вырезанным из исходных кадров по bounding box-разметке.
+
+Проект включает:
+
+- подготовку датасета;
+- обучение модели;
+- оценку качества;
+- inference для одного изображения;
+- веб-интерфейс на Streamlit;
+- Docker-конфигурацию.
+
+---
 
 ## Используемые технологии
 
@@ -16,12 +30,66 @@
 - scikit-learn
 - pandas
 - matplotlib
+- Streamlit
 - Docker
+
+---
+
+## Архитектура модели
+
+Основная модель — `ResidualCNN`
+
+Дополнительная модель - `CustomCNN`
+
+Для смены модели в файле `config.py` изменить `MODEL_NAME`
+
+Используются:
+
+- residual-блоки;
+- BatchNorm;
+- ReLU;
+- Dropout;
+- AdamW;
+- CosineAnnealingLR;
+- data augmentation;
+- weighted CrossEntropyLoss.
+
+Модель обучается без pretrained-весов.
+
+---
+
+## Результаты(ResidualCNN)
+
+### Validation metrics
+
+| Metric | Value |
+|---|---|
+| Accuracy | 90.85% |
+| Macro F1 | 71.83% |
+| Weighted F1 | 91.95% |
+| Validation samples | 8866 |
+| Errors | 811 |
+
+---
+
+## Результаты(CustomCNN)
+
+### Validation metrics
+
+| Metric | Value |
+|---|---|
+| Accuracy | 80.98% |
+| Macro F1 | 58.63% |
+| Weighted F1 | 83.51% |
+| Validation samples | 8866 |
+| Errors | 1686 |
+
+---
 
 ## Структура проекта
 
 ```text
-traffic-sign-classifier/
+.
 ├── data/
 │   ├── raw/
 │   └── processed/
@@ -31,90 +99,133 @@ traffic-sign-classifier/
 │   └── plots/
 ├── reports/
 ├── src/
+│   ├── app.py
 │   ├── config.py
-│   ├── prepare_data.py
 │   ├── dataset.py
-│   ├── models.py
-│   ├── train.py
 │   ├── evaluate.py
-│   └── predict.py
+│   ├── models.py
+│   ├── predict.py
+│   ├── prepare_data.py
+│   └── train.py
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
 ├── README.md
-└── .gitignore
+├── .gitignore
+└── .dockerignore
+```
+---
 
-Датасет
+## Датасет
 
-Архив датасета необходимо поместить в:
-
+Используется RTSD (Russian Traffic Sign Dataset).
+Датасет не включён в репозиторий из-за большого размера.
+Необходимо самостоятельно скачать архив и поместить его в:
+```bash
 data/raw/rtsd-dataset.zip
+```
 
-После этого выполнить подготовку данных:
+---
 
+## Подготовка данных
+
+Подготовка выполняется скриптом:
+```bash
 python src/prepare_data.py
+```
 
-Скрипт вырезает дорожные знаки из исходных кадров по bounding box-разметке и формирует структуру:
-
+Скрипт:
+читает JSON-аннотации;
+вырезает дорожные знаки из исходных кадров;
+сохраняет изображения в формате ImageFolder.
+После обработки структура будет:
+```text
 data/processed/
 ├── train/
 └── val/
-Обучение модели
+```
+
+---
+
+## Обучение модели
+Локальный запуск:
+```bash
 python src/train.py
-
-Основная модель:
-
-ResidualCNN
-
-Результаты сохраняются в:
-
-outputs/
-├── checkpoints/best_model.pth
-├── metrics/history.json
-└── plots/
+```
 Оценка модели
+```bash
 python src/evaluate.py
+```
 
-Скрипт сохраняет:
-
+Сохраняются:
+```text
 outputs/metrics/classification_report.csv
 outputs/metrics/top_errors.csv
 outputs/metrics/eval_summary.json
 outputs/plots/confusion_matrix.png
-Предсказание для одного изображения
+```
+
+---
+
+## Предсказание для одного изображения
+```text
 python src/predict.py --image path/to/image.jpg
-
+```
 Пример:
-
+```bash
 python src/predict.py --image data/processed/val/1_1/example.jpg
-Docker
+```
 
-Сборка:
+---
 
+## Веб-интерфейс
+Проект содержит Streamlit-интерфейс для тестирования модели.
+Запуск:
+```bash
+streamlit run src/app.py
+```
+После запуска:
+http://localhost:8501
+
+В интерфейсе можно:
+
+- загрузить изображение;
+- получить top-5 предсказаний;
+- увидеть вероятности классов;
+- посмотреть пример эталонного знака из датасета.
+
+---
+
+## Docker
+
+```bash
 docker compose build
+docker compose up
+```
 
-Проверка CUDA:
+После запуска приложение доступно по адресу:
+http://localhost:8501
 
-docker compose run --rm sign-classifier python -c "import torch; print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0))"
+---
 
-Обучение:
+## Особенности проекта
+Датасет является сильно несбалансированным, поэтому кроме accuracy используются:
 
-docker compose run --rm sign-classifier python src/train.py
+- macro F1-score;
+- weighted F1-score;
+- confusion matrix;
+- classification report.
 
-Оценка:
+# Для улучшения качества редких классов используются:
 
-docker compose run --rm sign-classifier python src/evaluate.py
-Полученный результат
+- weighted loss;
+- data augmentation;
+- residual architecture.
 
-На валидационной выборке:
-
-Accuracy: 0.9956
-Macro F1: 0.8864
-Weighted F1: 0.9955
-Ошибок: 39 из 8866
-Особенности
-
-Датасет является несбалансированным: часть классов представлена большим количеством изображений, а часть — малым. Поэтому для анализа используются не только accuracy, но и macro F1.
-
-
-После этого сделаем `reports/report.md`.
+# Возможные улучшения
+- Focal Loss
+- MixUp / CutMix
+- Vision Transformer
+- ONNX / TensorRT inference
+- Real-time video inference
+- Detection pipeline вместо classification crop-изображений

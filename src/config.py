@@ -17,5 +17,5 @@ NUM_EPOCHS = 15
 LEARNING_RATE = 1e-3
 NUM_WORKERS = 4
 
-MODEL_NAME = "residual_cnn"
+MODEL_NAME = "custom_cnn"
 SEED = 42
