@@ -38,3 +38,108 @@ stages:
       md5: 384b6281ab881e2d4bc848e9e622f393.dir
       size: 200501605
       nfiles: 104360
+  train:
+    cmd: uv run python src/train.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 384b6281ab881e2d4bc848e9e622f393.dir
+      size: 200501605
+      nfiles: 104360
+    - path: src/class_balance.py
+      hash: md5
+      md5: 90d155fdd01a271f8229e443bf0086d4
+      size: 2079
+    - path: src/config.py
+      hash: md5
+      md5: 16faf8866165436f8b51eaf950baddd4
+      size: 1584
+    - path: src/dataset.py
+      hash: md5
+      md5: 6bc25a3fdb3898d3e8644bc85de0dd51
+      size: 6003
+    - path: src/losses.py
+      hash: md5
+      md5: 5eba2c01660764b0471a1dcae263d738
+      size: 1639
+    - path: src/models.py
+      hash: md5
+      md5: 4fa0ec2ff20d101ae311c0a95a3d4999
+      size: 3906
+    - path: src/train.py
+      hash: md5
+      md5: 75e0f7bdd1e5231453b73849c8d0370b
+      size: 7365
+    params:
+      params.yaml:
+        train:
+          model: residual_cnn
+          img_size: 64
+          batch_size: 128
+          epochs: 15
+          lr: 0.001
+          weight_decay: 0.0001
+          num_workers: 8
+          seed: 42
+          class_weighting: inverse
+          effective_number_beta: 0.999
+          sampler: none
+          loss: ce
+          focal_gamma: 2.0
+          label_smoothing: 0.0
+          augmentation: baseline
+    outs:
+    - path: models/best_model.pth
+      hash: md5
+      md5: 4cba4b267e5c411ebb3e612fa62a6420
+      size: 8030069
+    - path: outputs/metrics/history.json
+      hash: md5
+      md5: ef213a772686f132582d0035744c6d79
+      size: 4419
+    - path: outputs/metrics/train_metrics.json
+      hash: md5
+      md5: 4b6cc0a01af21d330d70939bf00792c5
+      size: 99
+  evaluate:
+    cmd: uv run python src/evaluate.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 384b6281ab881e2d4bc848e9e622f393.dir
+      size: 200501605
+      nfiles: 104360
+    - path: models/best_model.pth
+      hash: md5
+      md5: 4cba4b267e5c411ebb3e612fa62a6420
+      size: 8030069
+    - path: src/evaluate.py
+      hash: md5
+      md5: acde3b07efa50ca0be743384a627de30
+      size: 4748
+    - path: src/inference.py
+      hash: md5
+      md5: 7f2054ec428bdcba40b807dc4a4689bb
+      size: 1890
+    - path: src/plot_normalized_confusion.py
+      hash: md5
+      md5: ace0969659d8c9b5028232756f36068e
+      size: 1375
+    outs:
+    - path: outputs/metrics/classification_report.csv
+      hash: md5
+      md5: 36f17ce0814312f712f4914751f3c5cb
+      size: 6844
+    - path: outputs/metrics/eval_summary.json
+      hash: md5
+      md5: 57699bddd5092d5632be53f1211eb731
+      size: 378
+    - path: outputs/metrics/top_errors.csv
+      hash: md5
+      md5: e53d2a7b57997b8b7b21d1907fca1cf2
+      size: 3180
+    - path: outputs/plots
+      hash: md5
+      md5: 9a6994917aedd8484c9a285a528d8f16.dir
+      size: 172678
+      nfiles: 2
