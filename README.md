@@ -143,10 +143,11 @@ download ──> prepare ──> train ──> evaluate
 - Сырой архив (18 ГБ) в DVC-кэш не копируется (`cache: false`), источник правды — Kaggle;
   версионируются кропы `data/processed` (~450 МБ) и модель.
 - Remote — DagsHub (`https://dagshub.com/neF1anders/RTSC.dvc`, задан в `.dvc/config`).
-  Чтение публичное: после клона достаточно `make pull`, обучать заново не нужно
+  После клона достаточно `make pull`, обучать заново не нужно
   (модель 8 МБ, кропы ~450 МБ; только модель — `uv run dvc pull models/best_model.pth`).
-- Для `make push` нужен токен DagsHub, он хранится только локально
-  (`.dvc/config.local`, не в git):
+- DagsHub не отдаёт DVC-хранилище анонимно даже у публичного репозитория, поэтому
+  нужен токен любого (бесплатного) аккаунта DagsHub — для `pull`, а у владельца и для `push`.
+  Токен хранится только локально (`.dvc/config.local`, не в git):
   ```bash
   uv run dvc remote modify dagshub --local auth basic
   uv run dvc remote modify dagshub --local user <dagshub-login>
