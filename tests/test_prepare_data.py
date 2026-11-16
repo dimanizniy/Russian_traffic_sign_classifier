@@ -20,6 +20,7 @@ def test_build_frame_tasks_groups_boxes_and_skips_small_or_missing() -> None:
         ],
     }
     tasks, skipped = build_frame_tasks(
+        "train",
         annotations,
         id_to_label={1: "2_1", 2: "5_19_1"},
         zip_members={FRAMES_PREFIX + "f1.jpg"},

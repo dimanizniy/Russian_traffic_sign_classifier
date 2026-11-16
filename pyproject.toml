@@ -42,7 +42,8 @@ select = ["E", "F", "W", "I", "B", "UP", "SIM", "N"]
 [tool.ruff.lint.isort]
 known-first-party = [
     "app", "class_balance", "config", "dataset", "download_data", "evaluate", "inference",
-    "losses", "models", "plot_normalized_confusion", "predict", "prepare_data", "train",
+    "losses", "models", "plot_normalized_confusion", "predict", "prepare_data", "splitting",
+    "train",
 ]
 
 [tool.mypy]

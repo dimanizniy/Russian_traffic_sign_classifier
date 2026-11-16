@@ -34,6 +34,10 @@ IMAGENET_STD = (0.229, 0.224, 0.225)
 class DataParams:
     min_size: int
     pad_ratio: float
+    split: str
+    sequence_gap_seconds: float
+    val_fraction: float
+    split_seed: int
 
 
 @dataclass(frozen=True)

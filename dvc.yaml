@@ -15,6 +15,7 @@ stages:
     deps:
       - data/raw/rtsd-dataset.zip
       - src/prepare_data.py
+      - src/splitting.py
     params:
       - data
     outs:
