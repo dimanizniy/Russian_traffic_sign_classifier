@@ -1,12 +1,13 @@
 services:
   sign-classifier:
     build: .
+    image: rtsc-app
     container_name: sign-classifier
-    volumes:
-      - .:/app
-    working_dir: /app
     ports:
       - "8501:8501"
+    volumes:
+      # Example images for the "class sample" panel; optional.
+      - ./data/processed:/app/data/processed:ro
     deploy:
       resources:
         reservations:
@@ -14,4 +15,3 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-    command: streamlit run src/app.py --server.address=0.0.0.0 --server.port=8501
