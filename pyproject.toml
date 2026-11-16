@@ -1,0 +1,77 @@
+[project]
+name = "russian-traffic-sign-classifier"
+version = "0.2.0"
+description = "Russian traffic sign (RTSD) classifier with PyTorch, DVC pipeline and Streamlit demo"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "kaggle>=2.2.5",
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.5",
+    "pandas>=3.1.1",
+    "pillow>=13.0.0",
+    "pyyaml>=6.0.3",
+    "scikit-learn>=1.9.1",
+    "six>=1.17.0",
+    "streamlit>=1.67.0",
+    "torch>=2.14.1",
+    "torchvision>=0.29.1",
+    "tqdm>=4.70.1",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchvision = { index = "pytorch-cu130" }
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "N"]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "app", "class_balance", "config", "dataset", "download_data", "evaluate", "inference",
+    "losses", "models", "plot_normalized_confusion", "predict", "prepare_data", "splitting",
+    "train",
+]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src", "tests"]
+mypy_path = "src"
+explicit_package_bases = true
+ignore_missing_imports = true
+check_untyped_defs = true
+disallow_untyped_defs = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
+
+[dependency-groups]
+dev = [
+    "dvc>=3.67.1",
+    "mypy>=2.4.1",
+    "pandas-stubs>=3.1.0.261029",
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+    "types-pyyaml>=6.0.12.20261113",
+    "types-tqdm>=4.70.0.20261106",
+]

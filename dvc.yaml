@@ -1,0 +1,66 @@
+stages:
+  download:
+    cmd: uv run python src/download_data.py
+    deps:
+      - src/download_data.py
+    outs:
+      # 18 GB source archive is not duplicated into the DVC cache: Kaggle is the
+      # source of truth for it, the processed crops below are versioned instead.
+      - data/raw/rtsd-dataset.zip:
+          cache: false
+          persist: true
+
+  prepare:
+    cmd: uv run python src/prepare_data.py
+    deps:
+      - data/raw/rtsd-dataset.zip
+      - src/prepare_data.py
+      - src/splitting.py
+    params:
+      - data
+    outs:
+      - data/processed
+
+  train:
+    cmd: uv run python src/train.py
+    deps:
+      - data/processed
+      - src/train.py
+      - src/dataset.py
+      - src/models.py
+      - src/losses.py
+      - src/class_balance.py
+      - src/config.py
+    params:
+      - train
+    outs:
+      - models/best_model.pth
+      - outputs/plots/train:
+          cache: false
+    metrics:
+      - outputs/metrics/train_metrics.json:
+          cache: false
+    plots:
+      - outputs/metrics/history.json:
+          cache: false
+          x: epoch
+          y: val_macro_f1
+
+  evaluate:
+    cmd: uv run python src/evaluate.py
+    deps:
+      - models/best_model.pth
+      - data/processed
+      - src/evaluate.py
+      - src/inference.py
+      - src/plot_normalized_confusion.py
+    metrics:
+      - outputs/metrics/eval_summary.json:
+          cache: false
+    outs:
+      - outputs/metrics/classification_report.csv:
+          cache: false
+      - outputs/metrics/top_errors.csv:
+          cache: false
+      - outputs/plots/eval:
+          cache: false

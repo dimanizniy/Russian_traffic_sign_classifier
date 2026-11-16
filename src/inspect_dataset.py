@@ -1,7 +1,8 @@
-import zipfile
-from pathlib import Path
+"""Print the layout of the raw RTSD archive."""
 
-ZIP_PATH = Path("data/raw/rtsd-dataset.zip")
+import zipfile
+
+from config import RAW_ZIP_PATH as ZIP_PATH
 
 with zipfile.ZipFile(ZIP_PATH, "r") as z:
     names = z.namelist()

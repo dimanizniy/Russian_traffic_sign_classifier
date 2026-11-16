@@ -1,14 +1,16 @@
 .venv/
 __pycache__/
 *.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-data/raw/
-data/processed/
-
-outputs/checkpoints/
-outputs/metrics/
-outputs/plots/
+# Raw archive comes from Kaggle (dvc stage `download`), never committed.
+/data/raw/
+# data/processed and models/ are DVC outputs: DVC writes their .gitignore entries.
+outputs/metrics/confusion_matrix.npy
 
 .DS_Store
 .idea/
 .vscode/
+logs/
