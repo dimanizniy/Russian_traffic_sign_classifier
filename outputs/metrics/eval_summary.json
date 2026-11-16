@@ -1,13 +1,13 @@
 {
   "model_name": "residual_cnn",
-  "num_classes": 155,
-  "val_classes_present": 139,
-  "val_accuracy": 0.9956011730205279,
-  "macro_precision": 0.995755016634283,
-  "macro_recall": 0.9877409745457755,
-  "macro_f1": 0.9909734342706288,
-  "macro_f1_all_train_classes": 0.8886794023459189,
-  "weighted_f1": 0.9955539101541468,
-  "total_val_samples": 8866,
-  "total_errors": 39
+  "num_classes": 153,
+  "val_classes_present": 100,
+  "val_accuracy": 0.9285097399481815,
+  "macro_precision": 0.842526358827651,
+  "macro_recall": 0.8950175337340787,
+  "macro_f1": 0.8496494778066563,
+  "macro_f1_all_train_classes": 0.5553264560827821,
+  "weighted_f1": 0.9388434706996209,
+  "total_val_samples": 10421,
+  "total_errors": 745
 }

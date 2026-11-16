@@ -47,8 +47,8 @@ stages:
     deps:
     - path: data/processed
       hash: md5
-      md5: 384b6281ab881e2d4bc848e9e622f393.dir
-      size: 200501605
+      md5: a548f638bc2656c8d32498c4cf70a333.dir
+      size: 200501604
       nfiles: 104360
     - path: src/class_balance.py
       hash: md5
@@ -56,8 +56,8 @@ stages:
       size: 2079
     - path: src/config.py
       hash: md5
-      md5: 1cb9becd9c89758fd02860c6a545198d
-      size: 1658
+      md5: 322ad4632609400452ddabb656ae2a48
+      size: 1749
     - path: src/dataset.py
       hash: md5
       md5: 6bc25a3fdb3898d3e8644bc85de0dd51
@@ -85,9 +85,9 @@ stages:
           weight_decay: 0.0001
           num_workers: 8
           seed: 42
-          class_weighting: none
+          class_weighting: inverse
           effective_number_beta: 0.999
-          sampler: weighted
+          sampler: none
           loss: ce
           focal_gamma: 2.0
           label_smoothing: 0.0
@@ -95,33 +95,33 @@ stages:
     outs:
     - path: models/best_model.pth
       hash: md5
-      md5: c9cc4f19c3101d967f52c53de9bc5d11
-      size: 8030069
+      md5: fce3ba2ce4246cae35d1f1d27b33b4c4
+      size: 8028021
     - path: outputs/metrics/history.json
       hash: md5
-      md5: f71aa345c3e1747461a20fe2cfe0fe64
-      size: 4436
+      md5: ef5484defe988c6406ec7a0c9f6bd371
+      size: 4407
     - path: outputs/metrics/train_metrics.json
       hash: md5
-      md5: 685f2c217737f6c64270b76a85fb1051
+      md5: 8f4dd37f4a9c28b1e3514a62e94d46f5
       size: 99
     - path: outputs/plots/train
       hash: md5
-      md5: 632690bd528b9034996b2eb6a5abe49e.dir
-      size: 110388
+      md5: c5a56ced0ea69e3b1ab8bda960ca7e01.dir
+      size: 135024
       nfiles: 3
   evaluate:
     cmd: uv run python src/evaluate.py
     deps:
     - path: data/processed
       hash: md5
-      md5: 384b6281ab881e2d4bc848e9e622f393.dir
-      size: 200501605
+      md5: a548f638bc2656c8d32498c4cf70a333.dir
+      size: 200501604
       nfiles: 104360
     - path: models/best_model.pth
       hash: md5
-      md5: c9cc4f19c3101d967f52c53de9bc5d11
-      size: 8030069
+      md5: fce3ba2ce4246cae35d1f1d27b33b4c4
+      size: 8028021
     - path: src/evaluate.py
       hash: md5
       md5: 78b4f8ec48438824e7d8feb3bb034e16
@@ -137,18 +137,18 @@ stages:
     outs:
     - path: outputs/metrics/classification_report.csv
       hash: md5
-      md5: c86b35cd5e5d9c5838796e4b240584cf
-      size: 4567
+      md5: bc683875ea9bbc0721ee7941d688d5dd
+      size: 5298
     - path: outputs/metrics/eval_summary.json
       hash: md5
-      md5: 534d15b8117a9c1a3ef3bffd3ff9f75b
-      size: 376
+      md5: 457fc8b0a80112b16631f2fede041aef
+      size: 378
     - path: outputs/metrics/top_errors.csv
       hash: md5
-      md5: 2bbd81475f0ba52bc1cc6e0b6f7e549d
-      size: 453
+      md5: c96347ea1bb4b3760ce0b310bef05518
+      size: 2992
     - path: outputs/plots/eval
       hash: md5
-      md5: e6227ab9884ab57c6b2664bfa613885b.dir
-      size: 170265
+      md5: 7d6d6657647cd3ff7a48d430b8e9d927.dir
+      size: 161508
       nfiles: 2

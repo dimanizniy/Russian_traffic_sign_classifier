@@ -1,5 +1,5 @@
 {
-  "best_val_macro_f1": 0.9909734342706288,
-  "best_epoch": 15,
-  "training_time_seconds": 642.5
+  "best_val_macro_f1": 0.6587530143553589,
+  "best_epoch": 14,
+  "training_time_seconds": 632.7
 }
