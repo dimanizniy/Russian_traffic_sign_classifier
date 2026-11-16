@@ -1,0 +1,40 @@
+schema: '2.0'
+stages:
+  download:
+    cmd: uv run python src/download_data.py
+    deps:
+    - path: src/download_data.py
+      hash: md5
+      md5: 8eaad26983ecb44155c4c285e44463d6
+      size: 1489
+    outs:
+    - path: data/raw/rtsd-dataset.zip
+      hash: md5
+      md5: 341ced7e2f1f6106700c45b851389e10
+      size: 18405377368
+  prepare:
+    cmd: uv run python src/prepare_data.py
+    deps:
+    - path: data/raw/rtsd-dataset.zip
+      hash: md5
+      md5: 341ced7e2f1f6106700c45b851389e10
+      size: 18405377368
+    - path: src/config.py
+      hash: md5
+      md5: 16faf8866165436f8b51eaf950baddd4
+      size: 1584
+    - path: src/prepare_data.py
+      hash: md5
+      md5: ab9f614968ed9fce3c9770e8871c8799
+      size: 6038
+    params:
+      params.yaml:
+        data:
+          min_size: 12
+          pad_ratio: 0.08
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 384b6281ab881e2d4bc848e9e622f393.dir
+      size: 200501605
+      nfiles: 104360
