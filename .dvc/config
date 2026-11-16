@@ -1,2 +1,6 @@
 [cache]
     type = "hardlink,symlink"
+[core]
+    remote = dagshub
+['remote "dagshub"']
+    url = https://dagshub.com/neF1anders/RTSC.dvc

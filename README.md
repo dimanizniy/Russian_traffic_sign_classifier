@@ -9,10 +9,11 @@
 
 ```bash
 make install      # uv sync: .venv из uv.lock (torch с CUDA 13.0)
-make gpu-check    # torch видит видеокарту?
-make repro        # скачать датасет -> нарезать -> обучить -> оценить
+make pull         # готовая модель и кропы из DVC remote (DagsHub), без обучения
 make app          # Streamlit на http://localhost:8501
 ```
+
+Обучить с нуля: `make gpu-check && make repro` (скачать датасет -> нарезать -> обучить -> оценить).
 
 Нужен токен Kaggle: `~/.kaggle/access_token` (или `KAGGLE_API_TOKEN`, или старые
 `~/.kaggle/kaggle.json` / `KAGGLE_USERNAME`+`KAGGLE_KEY`). Архив `watchman/rtsd-dataset`
@@ -141,11 +142,15 @@ download ──> prepare ──> train ──> evaluate
   конкретного коммита без переобучения: `git checkout <commit> && make pull`.
 - Сырой архив (18 ГБ) в DVC-кэш не копируется (`cache: false`), источник правды — Kaggle;
   версионируются кропы `data/processed` (~450 МБ) и модель.
-- Remote по умолчанию — локальная папка, настраивается в `.dvc/config.local`:
+- Remote — DagsHub (`https://dagshub.com/neF1anders/RTSC.dvc`, задан в `.dvc/config`).
+  Чтение публичное: после клона достаточно `make pull`, обучать заново не нужно
+  (модель 8 МБ, кропы ~450 МБ; только модель — `uv run dvc pull models/best_model.pth`).
+- Для `make push` нужен токен DagsHub, он хранится только локально
+  (`.dvc/config.local`, не в git):
   ```bash
-  uv run dvc remote add --local -d localstore ~/dvc-storage/russian_traffic_sign_classifier
-  # для команды — общий remote, например S3:
-  uv run dvc remote add -d storage s3://bucket/rtsc
+  uv run dvc remote modify dagshub --local auth basic
+  uv run dvc remote modify dagshub --local user <dagshub-login>
+  uv run dvc remote modify dagshub --local password <token>
   ```
 
 ### Эксперименты
