@@ -8,7 +8,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from config import METRICS_DIR, PLOTS_DIR
+from config import EVAL_PLOTS_DIR, METRICS_DIR
 
 
 def normalize_without_diagonal(cm: np.ndarray) -> np.ndarray:
@@ -35,7 +35,7 @@ def main() -> None:
     cm_path = METRICS_DIR / "confusion_matrix.npy"
     if not cm_path.exists():
         raise FileNotFoundError(f"{cm_path} not found, run `make evaluate` first")
-    out_path = PLOTS_DIR / "confusion_matrix_normalized.png"
+    out_path = EVAL_PLOTS_DIR / "confusion_matrix_normalized.png"
     plot_normalized_confusion(np.load(cm_path), out_path)
     print(f"Saved to: {out_path}")
 

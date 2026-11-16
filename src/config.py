@@ -22,6 +22,8 @@ MODEL_PATH = MODELS_DIR / "best_model.pth"
 
 OUTPUT_DIR = ROOT_DIR / "outputs"
 PLOTS_DIR = OUTPUT_DIR / "plots"
+TRAIN_PLOTS_DIR = PLOTS_DIR / "train"
+EVAL_PLOTS_DIR = PLOTS_DIR / "eval"
 METRICS_DIR = OUTPUT_DIR / "metrics"
 
 IMAGENET_MEAN = (0.485, 0.456, 0.406)

@@ -15,7 +15,6 @@ stages:
     deps:
       - data/raw/rtsd-dataset.zip
       - src/prepare_data.py
-      - src/config.py
     params:
       - data
     outs:
@@ -35,6 +34,8 @@ stages:
       - train
     outs:
       - models/best_model.pth
+      - outputs/plots/train:
+          cache: false
     metrics:
       - outputs/metrics/train_metrics.json:
           cache: false
@@ -60,5 +61,5 @@ stages:
           cache: false
       - outputs/metrics/top_errors.csv:
           cache: false
-      - outputs/plots:
+      - outputs/plots/eval:
           cache: false

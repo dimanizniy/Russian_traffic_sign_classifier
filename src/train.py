@@ -17,7 +17,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from class_balance import compute_class_weights
-from config import METRICS_DIR, MODEL_PATH, PLOTS_DIR, TrainParams, load_train_params
+from config import METRICS_DIR, MODEL_PATH, TRAIN_PLOTS_DIR, TrainParams, load_train_params
 from dataset import build_data
 from inference import pick_device
 from losses import build_criterion
@@ -110,7 +110,7 @@ def evaluate_epoch(
 
 
 def plot_history(history: list[dict[str, float]]) -> None:
-    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+    TRAIN_PLOTS_DIR.mkdir(parents=True, exist_ok=True)
     for metric, ylabel in (("loss", "Loss"), ("accuracy", "Accuracy"), ("macro_f1", "Macro F1")):
         plt.figure()
         plt.plot([row[f"train_{metric}"] for row in history], label=f"train {ylabel}")
@@ -119,7 +119,7 @@ def plot_history(history: list[dict[str, float]]) -> None:
         plt.ylabel(ylabel)
         plt.legend()
         plt.grid()
-        plt.savefig(PLOTS_DIR / f"{metric}.png", dpi=150)
+        plt.savefig(TRAIN_PLOTS_DIR / f"{metric}.png", dpi=150)
         plt.close()
 
 

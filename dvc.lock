@@ -19,10 +19,6 @@ stages:
       hash: md5
       md5: 341ced7e2f1f6106700c45b851389e10
       size: 18405377368
-    - path: src/config.py
-      hash: md5
-      md5: 16faf8866165436f8b51eaf950baddd4
-      size: 1584
     - path: src/prepare_data.py
       hash: md5
       md5: ab9f614968ed9fce3c9770e8871c8799

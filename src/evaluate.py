@@ -13,7 +13,7 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from config import METRICS_DIR, PLOTS_DIR, VAL_DIR
+from config import EVAL_PLOTS_DIR, METRICS_DIR, VAL_DIR
 from dataset import SignDataset, build_eval_transform
 from inference import LoadedModel, load_trained_model
 from plot_normalized_confusion import plot_normalized_confusion
@@ -53,7 +53,7 @@ def plot_confusion(cm: np.ndarray) -> None:
     plt.ylabel("True class")
     plt.colorbar()
     plt.tight_layout()
-    plt.savefig(PLOTS_DIR / "confusion_matrix.png", dpi=150)
+    plt.savefig(EVAL_PLOTS_DIR / "confusion_matrix.png", dpi=150)
     plt.close()
 
 
@@ -90,7 +90,7 @@ def summarize_metrics(
 
 def main() -> None:
     METRICS_DIR.mkdir(parents=True, exist_ok=True)
-    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+    EVAL_PLOTS_DIR.mkdir(parents=True, exist_ok=True)
 
     loaded = load_trained_model()
     class_to_idx = {name: idx for idx, name in loaded.idx_to_class.items()}
@@ -109,7 +109,7 @@ def main() -> None:
     cm = confusion_matrix(targets, preds, labels=list(range(num_classes)))
     np.save(METRICS_DIR / "confusion_matrix.npy", cm)
     plot_confusion(cm)
-    plot_normalized_confusion(cm, PLOTS_DIR / "confusion_matrix_normalized.png")
+    plot_normalized_confusion(cm, EVAL_PLOTS_DIR / "confusion_matrix_normalized.png")
     save_top_errors(targets, preds, loaded.idx_to_class)
 
     report_json = {"model_name": loaded.model_name, **summary}
