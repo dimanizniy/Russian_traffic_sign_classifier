@@ -12,19 +12,19 @@ train:
   model: residual_cnn
   img_size: 64
   batch_size: 128
-  epochs: 15
+  epochs: 30
   lr: 0.001
   weight_decay: 0.0001
   num_workers: 8
   seed: 42
   # none | inverse | sqrt_inverse | effective_number
-  class_weighting: inverse
+  class_weighting: none
   effective_number_beta: 0.999
   # none | weighted
-  sampler: none
+  sampler: weighted
   # ce | focal
   loss: ce
   focal_gamma: 2.0
-  label_smoothing: 0.0
+  label_smoothing: 0.1
   # baseline | light
-  augmentation: baseline
+  augmentation: light

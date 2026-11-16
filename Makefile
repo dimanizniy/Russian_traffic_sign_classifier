@@ -1,9 +1,8 @@
 .DEFAULT_GOAL := help
 .PHONY: help install gpu-check lint format format-check typecheck test check \
-        data prepare train evaluate repro exp exp-show push pull \
+        data prepare train evaluate repro exp exp-apply exp-show push pull \
         predict app docker-build docker-up docker-down clean
 
-IMAGE ?= rtsc-app
 IMAGE_PATH ?=
 
 help: ## Show available targets
@@ -48,8 +47,14 @@ evaluate: ## Evaluate the current model
 repro: ## Run the full pipeline
 	uv run dvc repro
 
-exp: ## Run a tracked experiment, e.g. make exp ARGS="-S train.lr=0.0005 -n lr5e-4"
+# `dvc exp run -S` overrides only the named keys and leaves params.yaml modified, so
+# without the reset every next experiment silently inherits the previous overrides.
+exp: ## Tracked experiment from committed params, e.g. make exp ARGS="-n lr5e-4 -S train.lr=0.0005"
+	git checkout -- params.yaml
 	uv run dvc exp run $(ARGS)
+
+exp-apply: ## Bring an experiment into the workspace: make exp-apply NAME=seq-best-focal
+	uv run dvc exp apply $(NAME)
 
 exp-show: ## Compare experiments
 	uv run dvc exp show --only-changed --md

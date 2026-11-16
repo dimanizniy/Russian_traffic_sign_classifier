@@ -80,35 +80,35 @@ stages:
           model: residual_cnn
           img_size: 64
           batch_size: 128
-          epochs: 15
+          epochs: 30
           lr: 0.001
           weight_decay: 0.0001
           num_workers: 8
           seed: 42
-          class_weighting: inverse
+          class_weighting: none
           effective_number_beta: 0.999
-          sampler: none
+          sampler: weighted
           loss: ce
           focal_gamma: 2.0
-          label_smoothing: 0.0
-          augmentation: baseline
+          label_smoothing: 0.1
+          augmentation: light
     outs:
     - path: models/best_model.pth
       hash: md5
-      md5: fce3ba2ce4246cae35d1f1d27b33b4c4
+      md5: 8774a4dd7fb91b091705c0ecaf6e6f4c
       size: 8028021
     - path: outputs/metrics/history.json
       hash: md5
-      md5: ef5484defe988c6406ec7a0c9f6bd371
-      size: 4407
+      md5: 5ccb72cf4de2fc90672a81ceb4423a8a
+      size: 8821
     - path: outputs/metrics/train_metrics.json
       hash: md5
-      md5: 8f4dd37f4a9c28b1e3514a62e94d46f5
-      size: 99
+      md5: 6538e4c7f4f8a1a767382fcb3516f150
+      size: 100
     - path: outputs/plots/train
       hash: md5
-      md5: c5a56ced0ea69e3b1ab8bda960ca7e01.dir
-      size: 135024
+      md5: e8dd41a389575912edbcf1f9d903c6fe.dir
+      size: 120415
       nfiles: 3
   evaluate:
     cmd: uv run python src/evaluate.py
@@ -120,7 +120,7 @@ stages:
       nfiles: 104360
     - path: models/best_model.pth
       hash: md5
-      md5: fce3ba2ce4246cae35d1f1d27b33b4c4
+      md5: 8774a4dd7fb91b091705c0ecaf6e6f4c
       size: 8028021
     - path: src/evaluate.py
       hash: md5
@@ -137,18 +137,18 @@ stages:
     outs:
     - path: outputs/metrics/classification_report.csv
       hash: md5
-      md5: bc683875ea9bbc0721ee7941d688d5dd
-      size: 5298
+      md5: da8660d9bce6e22f3eb96122226777b7
+      size: 3716
     - path: outputs/metrics/eval_summary.json
       hash: md5
-      md5: 457fc8b0a80112b16631f2fede041aef
+      md5: f18e14f726d79878d30e89c8852db1f6
       size: 378
     - path: outputs/metrics/top_errors.csv
       hash: md5
-      md5: c96347ea1bb4b3760ce0b310bef05518
-      size: 2992
+      md5: 8b2253fd2d6244c66aa1ec6b23fb33b6
+      size: 544
     - path: outputs/plots/eval
       hash: md5
-      md5: 7d6d6657647cd3ff7a48d430b8e9d927.dir
-      size: 161508
+      md5: d72a3ae06663474de2813ec977c4eb52.dir
+      size: 159311
       nfiles: 2
