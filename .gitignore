@@ -13,3 +13,4 @@ outputs/metrics/confusion_matrix.npy
 .DS_Store
 .idea/
 .vscode/
+logs/

@@ -48,8 +48,8 @@ stages:
       size: 2079
     - path: src/config.py
       hash: md5
-      md5: 16faf8866165436f8b51eaf950baddd4
-      size: 1584
+      md5: 1cb9becd9c89758fd02860c6a545198d
+      size: 1658
     - path: src/dataset.py
       hash: md5
       md5: 6bc25a3fdb3898d3e8644bc85de0dd51
@@ -64,8 +64,8 @@ stages:
       size: 3906
     - path: src/train.py
       hash: md5
-      md5: 75e0f7bdd1e5231453b73849c8d0370b
-      size: 7365
+      md5: a558a4dc9b040641f135fba6a0b62bde
+      size: 7383
     params:
       params.yaml:
         train:
@@ -95,8 +95,13 @@ stages:
       size: 4419
     - path: outputs/metrics/train_metrics.json
       hash: md5
-      md5: 4b6cc0a01af21d330d70939bf00792c5
+      md5: 55d58c1c21bf97d0d6ef8b802e5c2008
       size: 99
+    - path: outputs/plots/train
+      hash: md5
+      md5: c710469404b2e0cdf5eda00ee3415aec.dir
+      size: 134533
+      nfiles: 3
   evaluate:
     cmd: uv run python src/evaluate.py
     deps:
@@ -111,16 +116,16 @@ stages:
       size: 8030069
     - path: src/evaluate.py
       hash: md5
-      md5: acde3b07efa50ca0be743384a627de30
-      size: 4748
+      md5: 78b4f8ec48438824e7d8feb3bb034e16
+      size: 4768
     - path: src/inference.py
       hash: md5
       md5: 7f2054ec428bdcba40b807dc4a4689bb
       size: 1890
     - path: src/plot_normalized_confusion.py
       hash: md5
-      md5: ace0969659d8c9b5028232756f36068e
-      size: 1375
+      md5: 3a6b9e51fdadf04bed3433d93e7455ff
+      size: 1385
     outs:
     - path: outputs/metrics/classification_report.csv
       hash: md5
@@ -134,7 +139,7 @@ stages:
       hash: md5
       md5: e53d2a7b57997b8b7b21d1907fca1cf2
       size: 3180
-    - path: outputs/plots
+    - path: outputs/plots/eval
       hash: md5
       md5: 9a6994917aedd8484c9a285a528d8f16.dir
       size: 172678
