@@ -1,0 +1,13 @@
+{
+  "model_name": "residual_cnn",
+  "num_classes": 153,
+  "val_classes_present": 100,
+  "val_accuracy": 0.9905959121005662,
+  "macro_precision": 0.9615233166340019,
+  "macro_recall": 0.9449587736057959,
+  "macro_f1": 0.9483699890969004,
+  "macro_f1_all_train_classes": 0.6198496660764055,
+  "weighted_f1": 0.9900694598398817,
+  "total_val_samples": 10421,
+  "total_errors": 98
+}

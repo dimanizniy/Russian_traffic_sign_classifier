@@ -1,46 +1,43 @@
-import numpy as np
-import matplotlib.pyplot as plt
+"""Row-normalised confusion matrix without the diagonal, to make confusions visible."""
+
 from pathlib import Path
 
+import matplotlib
 
-CM_PATH = Path("outputs/metrics/confusion_matrix.npy")
-OUT_PATH = Path("outputs/plots/confusion_matrix_normalized.png")
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+from config import EVAL_PLOTS_DIR, METRICS_DIR
 
 
-def main():
-    if not CM_PATH.exists():
-        raise FileNotFoundError(
-            f"Не найден файл {CM_PATH}. "
-            f"Сначала запусти: python src/evaluate.py"
-        )
-
-    cm = np.load(CM_PATH)
-
+def normalize_without_diagonal(cm: np.ndarray) -> np.ndarray:
     row_sums = cm.sum(axis=1, keepdims=True)
+    normalized = np.divide(cm, row_sums, out=np.zeros_like(cm, dtype=float), where=row_sums != 0)
+    np.fill_diagonal(normalized, 0)
+    return normalized
 
-    cm_normalized = np.divide(
-        cm,
-        row_sums,
-        out=np.zeros_like(cm, dtype=float),
-        where=row_sums != 0,
-    )
 
-    np.fill_diagonal(cm_normalized, 0)
-
-    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-
+def plot_normalized_confusion(cm: np.ndarray, out_path: Path) -> None:
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     plt.figure(figsize=(14, 12))
-    plt.imshow(cm_normalized, interpolation="nearest")
+    plt.imshow(normalize_without_diagonal(cm), interpolation="nearest")
     plt.title("Normalized Confusion Matrix without diagonal")
     plt.xlabel("Predicted class")
     plt.ylabel("True class")
     plt.colorbar(label="Share of class samples")
-
     plt.tight_layout()
-    plt.savefig(OUT_PATH, dpi=300)
+    plt.savefig(out_path, dpi=200)
     plt.close()
 
-    print(f"Saved to: {OUT_PATH}")
+
+def main() -> None:
+    cm_path = METRICS_DIR / "confusion_matrix.npy"
+    if not cm_path.exists():
+        raise FileNotFoundError(f"{cm_path} not found, run `make evaluate` first")
+    out_path = EVAL_PLOTS_DIR / "confusion_matrix_normalized.png"
+    plot_normalized_confusion(np.load(cm_path), out_path)
+    print(f"Saved to: {out_path}")
 
 
 if __name__ == "__main__":

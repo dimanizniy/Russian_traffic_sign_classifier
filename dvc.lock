@@ -1,0 +1,154 @@
+schema: '2.0'
+stages:
+  download:
+    cmd: uv run python src/download_data.py
+    deps:
+    - path: src/download_data.py
+      hash: md5
+      md5: 8eaad26983ecb44155c4c285e44463d6
+      size: 1489
+    outs:
+    - path: data/raw/rtsd-dataset.zip
+      hash: md5
+      md5: 341ced7e2f1f6106700c45b851389e10
+      size: 18405377368
+  prepare:
+    cmd: uv run python src/prepare_data.py
+    deps:
+    - path: data/raw/rtsd-dataset.zip
+      hash: md5
+      md5: 341ced7e2f1f6106700c45b851389e10
+      size: 18405377368
+    - path: src/prepare_data.py
+      hash: md5
+      md5: f1aae55fad33917cc59f0bae71fe358f
+      size: 7398
+    - path: src/splitting.py
+      hash: md5
+      md5: 144f2979ad61e8127f8fd0e67ec1efe2
+      size: 2182
+    params:
+      params.yaml:
+        data:
+          min_size: 12
+          pad_ratio: 0.08
+          split: sequence
+          sequence_gap_seconds: 60
+          val_fraction: 0.1
+          split_seed: 42
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: a548f638bc2656c8d32498c4cf70a333.dir
+      size: 200501604
+      nfiles: 104360
+  train:
+    cmd: uv run python src/train.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: a548f638bc2656c8d32498c4cf70a333.dir
+      size: 200501604
+      nfiles: 104360
+    - path: src/class_balance.py
+      hash: md5
+      md5: 90d155fdd01a271f8229e443bf0086d4
+      size: 2079
+    - path: src/config.py
+      hash: md5
+      md5: 322ad4632609400452ddabb656ae2a48
+      size: 1749
+    - path: src/dataset.py
+      hash: md5
+      md5: 6bc25a3fdb3898d3e8644bc85de0dd51
+      size: 6003
+    - path: src/losses.py
+      hash: md5
+      md5: 5eba2c01660764b0471a1dcae263d738
+      size: 1639
+    - path: src/models.py
+      hash: md5
+      md5: 4fa0ec2ff20d101ae311c0a95a3d4999
+      size: 3906
+    - path: src/train.py
+      hash: md5
+      md5: a558a4dc9b040641f135fba6a0b62bde
+      size: 7383
+    params:
+      params.yaml:
+        train:
+          model: residual_cnn
+          img_size: 64
+          batch_size: 128
+          epochs: 30
+          lr: 0.001
+          weight_decay: 0.0001
+          num_workers: 8
+          seed: 42
+          class_weighting: none
+          effective_number_beta: 0.999
+          sampler: weighted
+          loss: ce
+          focal_gamma: 2.0
+          label_smoothing: 0.1
+          augmentation: light
+    outs:
+    - path: models/best_model.pth
+      hash: md5
+      md5: 8774a4dd7fb91b091705c0ecaf6e6f4c
+      size: 8028021
+    - path: outputs/metrics/history.json
+      hash: md5
+      md5: 5ccb72cf4de2fc90672a81ceb4423a8a
+      size: 8821
+    - path: outputs/metrics/train_metrics.json
+      hash: md5
+      md5: 6538e4c7f4f8a1a767382fcb3516f150
+      size: 100
+    - path: outputs/plots/train
+      hash: md5
+      md5: e8dd41a389575912edbcf1f9d903c6fe.dir
+      size: 120415
+      nfiles: 3
+  evaluate:
+    cmd: uv run python src/evaluate.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: a548f638bc2656c8d32498c4cf70a333.dir
+      size: 200501604
+      nfiles: 104360
+    - path: models/best_model.pth
+      hash: md5
+      md5: 8774a4dd7fb91b091705c0ecaf6e6f4c
+      size: 8028021
+    - path: src/evaluate.py
+      hash: md5
+      md5: 78b4f8ec48438824e7d8feb3bb034e16
+      size: 4768
+    - path: src/inference.py
+      hash: md5
+      md5: 7f2054ec428bdcba40b807dc4a4689bb
+      size: 1890
+    - path: src/plot_normalized_confusion.py
+      hash: md5
+      md5: 3a6b9e51fdadf04bed3433d93e7455ff
+      size: 1385
+    outs:
+    - path: outputs/metrics/classification_report.csv
+      hash: md5
+      md5: da8660d9bce6e22f3eb96122226777b7
+      size: 3716
+    - path: outputs/metrics/eval_summary.json
+      hash: md5
+      md5: f18e14f726d79878d30e89c8852db1f6
+      size: 378
+    - path: outputs/metrics/top_errors.csv
+      hash: md5
+      md5: 8b2253fd2d6244c66aa1ec6b23fb33b6
+      size: 544
+    - path: outputs/plots/eval
+      hash: md5
+      md5: d72a3ae06663474de2813ec977c4eb52.dir
+      size: 159311
+      nfiles: 2

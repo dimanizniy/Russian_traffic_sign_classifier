@@ -1,0 +1,30 @@
+data:
+  min_size: 12
+  pad_ratio: 0.08
+  # official: the dataset's frame-level split (leaks near-duplicate frames into val)
+  # sequence: hold out whole drives, frames more than sequence_gap_seconds apart
+  split: sequence
+  sequence_gap_seconds: 60
+  val_fraction: 0.1
+  split_seed: 42
+
+train:
+  model: residual_cnn
+  img_size: 64
+  batch_size: 128
+  epochs: 30
+  lr: 0.001
+  weight_decay: 0.0001
+  num_workers: 8
+  seed: 42
+  # none | inverse | sqrt_inverse | effective_number
+  class_weighting: none
+  effective_number_beta: 0.999
+  # none | weighted
+  sampler: weighted
+  # ce | focal
+  loss: ce
+  focal_gamma: 2.0
+  label_smoothing: 0.1
+  # baseline | light
+  augmentation: light
